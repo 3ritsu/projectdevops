@@ -3,8 +3,96 @@ pipeline {
 
     parameters {
         string(name: 'USER_NAME', defaultValue: 'Anonymous', description: 'Enter your name')
-        choice(name: 'EPIC', description: 'Select the epic')
-        activeChoice(name: 'US', description: 'Select a user story dynamically based on the epic') 
+        choice(name: 'EPIC', choices: [
+            'January', 'February', 'March', 'April', 'May', 'June', 
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ], description: 'Select the epic (month)')
+
+        // User Stories for each month
+        choice(name: 'USER_STORY_JANUARY', choices: [
+            'US-1.1: Set a daily reminder to write in the diary',
+            'US-1.2: Receive motivational messages for diary writing',
+            'US-1.3: View progress chart of diary entries',
+            'US-1.4: Get topic suggestions'
+        ], description: 'User Stories for January')
+
+        choice(name: 'USER_STORY_FEBRUARY', choices: [
+            'US-2.1: Set redecorating goals with deadlines',
+            'US-2.2: Upload and view before-and-after photos',
+            'US-2.3: Receive tips for redecorating',
+            'US-2.4: Share progress with friends'
+        ], description: 'User Stories for February')
+
+        choice(name: 'USER_STORY_MARCH', choices: [
+            'US-3.1: Set fitness goals like steps per day',
+            'US-3.2: Log meals daily',
+            'US-3.3: Receive reminders for meditation',
+            'US-3.4: Track water intake'
+        ], description: 'User Stories for March')
+
+        choice(name: 'USER_STORY_APRIL', choices: [
+            'US-4.1: Set kindness goals like complimenting someone daily',
+            'US-4.2: Log acts of kindness for reflection',
+            'US-4.3: Share kindness journey with friends',
+            'US-4.4: View motivational quotes about kindness'
+        ], description: 'User Stories for April')
+
+        choice(name: 'USER_STORY_MAY', choices: [
+            'US-5.1: Set a new challenge with step-by-step objectives',
+            'US-5.2: Receive encouragement after completing steps',
+            'US-5.3: View a checklist of tasks for the challenge',
+            'US-5.4: Get suggestions for new activities based on interests'
+        ], description: 'User Stories for May')
+
+        choice(name: 'USER_STORY_JUNE', choices: [
+            'US-6.1: Set goals to spend time with loved ones weekly',
+            'US-6.2: Log special moments with family or friends',
+            'US-6.3: Plan group activities with reminders',
+            'US-6.4: Share experiences to inspire connection'
+        ], description: 'User Stories for June')
+
+        choice(name: 'USER_STORY_JULY', choices: [
+            'US-7.1: Set a goal to attend specific concerts',
+            'US-7.2: Receive reminders about upcoming events',
+            'US-7.3: Share photos and videos of concerts',
+            'US-7.4: Track the number of dances completed'
+        ], description: 'User Stories for July')
+
+        choice(name: 'USER_STORY_AUGUST', choices: [
+            'US-8.1: Plan a night on the beach with reminders for essentials',
+            'US-8.2: Log the experience with photos and notes',
+            'US-8.3: Receive safety tips for sleeping outdoors',
+            'US-8.4: Track similar outdoor activities to create habits'
+        ], description: 'User Stories for August')
+
+        choice(name: 'USER_STORY_SEPTEMBER', choices: [
+            'US-9.1: Set travel goals for the month',
+            'US-9.2: Log destinations with photos and notes',
+            'US-9.3: Share experiences and view recommendations',
+            'US-9.4: Track travel budget to stay within limits'
+        ], description: 'User Stories for September')
+
+        choice(name: 'USER_STORY_OCTOBER', choices: [
+            'US-10.1: Set a study schedule with reminders',
+            'US-10.2: Track time spent studying daily',
+            'US-10.3: Set a goal to complete a course or certification',
+            'US-10.4: Share learning achievements with friends'
+        ], description: 'User Stories for October')
+
+        choice(name: 'USER_STORY_NOVEMBER', choices: [
+            'US-11.1: Set practice goals like playing an instrument daily',
+            'US-11.2: Track progress like learning songs or techniques',
+            'US-11.3: Receive encouragement after practice sessions',
+            'US-11.4: Share progress or join a learning community'
+        ], description: 'User Stories for November')
+
+        choice(name: 'USER_STORY_DECEMBER', choices: [
+            'US-12.1: Set daily reminders for 5-minute breathing exercises',
+            'US-12.2: Follow guided breathing techniques',
+            'US-12.3: Track how often breathing exercises are practiced',
+            'US-12.4: View tips on mindfulness to enhance breathing practice'
+        ], description: 'User Stories for December')
+
         choice(name: 'ACTION', choices: ['Test', 'Build', 'Deploy'], description: 'Choose the pipeline action')
         string(name: 'CURRENT_DATE', defaultValue: '01', description: 'Enter the current day of the month')
     }
@@ -12,8 +100,39 @@ pipeline {
     stages {
         stage('Setup') {
             steps {
-                echo "Hello, ${params.USER_NAME}!"
-                echo "You selected Epic: ${params.EPIC} and User Story: ${params.USER_STORY}."
+                script {
+                    // Dynamically determine the relevant user story based on EPIC
+                    def userStory = ""
+                    if (params.EPIC == "January") {
+                        userStory = params.USER_STORY_JANUARY
+                    } else if (params.EPIC == "February") {
+                        userStory = params.USER_STORY_FEBRUARY
+                    } else if (params.EPIC == "March") {
+                        userStory = params.USER_STORY_MARCH
+                    } else if (params.EPIC == "April") {
+                        userStory = params.USER_STORY_APRIL
+                    } else if (params.EPIC == "May") {
+                        userStory = params.USER_STORY_MAY
+                    } else if (params.EPIC == "June") {
+                        userStory = params.USER_STORY_JUNE
+                    } else if (params.EPIC == "July") {
+                        userStory = params.USER_STORY_JULY
+                    } else if (params.EPIC == "August") {
+                        userStory = params.USER_STORY_AUGUST
+                    } else if (params.EPIC == "September") {
+                        userStory = params.USER_STORY_SEPTEMBER
+                    } else if (params.EPIC == "October") {
+                        userStory = params.USER_STORY_OCTOBER
+                    } else if (params.EPIC == "November") {
+                        userStory = params.USER_STORY_NOVEMBER
+                    } else if (params.EPIC == "December") {
+                        userStory = params.USER_STORY_DECEMBER
+                    }
+
+                    // Display the selected user story
+                    echo "Hello, ${params.USER_NAME}!"
+                    echo "You selected Epic: ${params.EPIC} and User Story: ${userStory}."
+                }
             }
         }
 
@@ -22,8 +141,8 @@ pipeline {
                 expression { params.ACTION == 'Test' }
             }
             steps {
-                echo "Testing ${params.USER_STORY} in Epic: ${params.EPIC}..."
-                echo "Tests passed successfully for ${params.USER_STORY}!"
+                echo "Testing the selected User Story for Epic: ${params.EPIC}..."
+                echo "Tests passed successfully!"
             }
         }
 
@@ -32,8 +151,8 @@ pipeline {
                 expression { params.ACTION == 'Build' }
             }
             steps {
-                echo "Building features for ${params.USER_STORY} in Epic: ${params.EPIC}..."
-                echo "Mock build completed for ${params.USER_STORY}!"
+                echo "Building features for the selected User Story in Epic: ${params.EPIC}..."
+                echo "Mock build completed!"
             }
         }
 
@@ -42,8 +161,8 @@ pipeline {
                 expression { params.ACTION == 'Deploy' }
             }
             steps {
-                echo "Deploying features for ${params.USER_STORY} in Epic: ${params.EPIC}..."
-                echo "Mock deployment successful for ${params.USER_STORY}!"
+                echo "Deploying features for the selected User Story in Epic: ${params.EPIC}..."
+                echo "Mock deployment successful!"
             }
         }
 
@@ -62,7 +181,7 @@ pipeline {
         stage('Summary') {
             steps {
                 echo "Pipeline completed for ${params.USER_NAME}!"
-                echo "Epic: ${params.EPIC}, User Story: ${params.USER_STORY}, Action: ${params.ACTION}."
+                echo "Epic: ${params.EPIC}, Action: ${params.ACTION}."
             }
         }
     }
