@@ -1,0 +1,69 @@
+pipeline {
+    agent any
+
+    parameters {
+        string(name: 'USER_NAME', defaultValue: 'Anonymous', description: 'Enter your name')
+        choice(name: 'EPIC', description: 'Select the epic')
+        activeChoice(name: 'US', description: 'Select a user story dynamically based on the epic') 
+        choice(name: 'ACTION', choices: ['Test', 'Build', 'Deploy'], description: 'Choose the pipeline action')
+        string(name: 'CURRENT_DATE', defaultValue: '01', description: 'Enter the current day of the month')
+    }
+
+    stages {
+        stage('Setup') {
+            steps {
+                echo "Hello, ${params.USER_NAME}!"
+                echo "You selected Epic: ${params.EPIC} and User Story: ${params.USER_STORY}."
+            }
+        }
+
+        stage('Testing') {
+            when {
+                expression { params.ACTION == 'Test' }
+            }
+            steps {
+                echo "Testing ${params.USER_STORY} in Epic: ${params.EPIC}..."
+                echo "Tests passed successfully for ${params.USER_STORY}!"
+            }
+        }
+
+        stage('Building') {
+            when {
+                expression { params.ACTION == 'Build' }
+            }
+            steps {
+                echo "Building features for ${params.USER_STORY} in Epic: ${params.EPIC}..."
+                echo "Mock build completed for ${params.USER_STORY}!"
+            }
+        }
+
+        stage('Deployment') {
+            when {
+                expression { params.ACTION == 'Deploy' }
+            }
+            steps {
+                echo "Deploying features for ${params.USER_STORY} in Epic: ${params.EPIC}..."
+                echo "Mock deployment successful for ${params.USER_STORY}!"
+            }
+        }
+
+        stage('Reminders') {
+            steps {
+                script {
+                    if (params.CURRENT_DATE.toInteger() <= 15) {
+                        echo "Reminder: Time is running out to achieve your objectives for ${params.EPIC}!"
+                    } else {
+                        echo "Reminder: The end of the month is near—make sure to complete your objectives for ${params.EPIC}!"
+                    }
+                }
+            }
+        }
+
+        stage('Summary') {
+            steps {
+                echo "Pipeline completed for ${params.USER_NAME}!"
+                echo "Epic: ${params.EPIC}, User Story: ${params.USER_STORY}, Action: ${params.ACTION}."
+            }
+        }
+    }
+}
